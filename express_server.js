@@ -9,7 +9,11 @@ app.set("view engine", "ejs");
 
 let generateRandomString = function () {
   let max = 6;
-  return Math.floor(Math.random() * Math.floor(max));
+  let num = [];
+  for (let i = 0; i < 6; i++) {
+    num.push(Math.floor(Math.random() * Math.floor(max)))
+  }
+  return num.join('');
 };
 
 
@@ -36,14 +40,24 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  let value = Object.values(req.body).toString();
+  let newKey = generateRandomString();
+  urlDatabase[newKey] = value;
+  console.log(urlDatabase); // seeing if the key value pair is in the urlDatabase.
+  res.status(200).redirect(`urls/${newKey}`);
 });
 
 app.get("/urls/:shortURL", (req, res) => {
   let templateVars = { shortURL: req.params.shortURL, longURL: req.params.longURL };
   res.render("urls_show", templateVars);
 });
+
+app.get("/u/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL];
+  res.redirect(longURL);
+});
+
+
 
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
