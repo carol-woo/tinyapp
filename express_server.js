@@ -42,7 +42,7 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  let value = Object.values(req.body).toString();
+  let value = req.body.longURL;
   let newKey = generateRandomString();
   urlDatabase[newKey] = value;
   console.log(urlDatabase); // seeing if the key value pair is in the urlDatabase.
@@ -50,7 +50,9 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: req.params.longURL };
+  let shortURL = req.params.shortURL;
+  let longURL = urlDatabase[shortURL];
+  let templateVars = { shortURL: shortURL, longURL: longURL };
   res.render("urls_show", templateVars);
 });
 
@@ -59,9 +61,15 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
+
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
+});
+
+app.post("/urls/:shortURL", (req, res) => {
+  urlDatabase[req.params.shortURL] = req.body.longURL;
+  res.redirect("/urls/" + req.params.shortURL);
 });
 
 app.get("/hello", (req, res) => {
