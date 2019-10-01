@@ -8,12 +8,14 @@ app.set("view engine", "ejs");
 
 
 let generateRandomString = function () {
-  let max = 6;
-  let num = [];
-  for (let i = 0; i < 6; i++) {
-    num.push(Math.floor(Math.random() * Math.floor(max)));
+  let letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+  let stringlength = 6;
+  let randomstring = '';
+  for (let i = 0; i < stringlength; i++) {
+    let randomNum = Math.floor(Math.random() * letters.length);
+    randomstring += letters.substring(randomNum, randomNum + 1);
   }
-  return num.join('');
+  return randomstring;
 };
 
 
@@ -57,12 +59,14 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-
+app.post("/urls/:shortURL/delete", (req, res) => {
+  delete urlDatabase[req.params.shortURL];
+  res.redirect("/urls");
+});
 
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
-
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
