@@ -11,7 +11,7 @@ let generateRandomString = function () {
   let max = 6;
   let num = [];
   for (let i = 0; i < 6; i++) {
-    num.push(Math.floor(Math.random() * Math.floor(max)))
+    num.push(Math.floor(Math.random() * Math.floor(max)));
   }
   return num.join('');
 };
