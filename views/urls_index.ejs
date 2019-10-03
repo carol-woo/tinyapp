@@ -23,11 +23,13 @@
           <th scope="col">Delete</th>
         </tr>
       </thead>
+      <% if(user) {%>
       <tbody>
         <% for(let url in urls) { %>
+        <% if(user.id === urls[url].userID) { %>
         <tr>
           <td><%= url %></td>
-          <td><%= urls[url] %></td>
+          <td><%= urls[url].longURL %></td>
           <td>
             <a href="/urls/<%=url%>" class="btn btn-primary">Edit</a>
           </td>
@@ -37,6 +39,10 @@
             </form>
           </td>
         </tr>
+        <% } %>
+        <% } %>
+        <% } else { %>
+        <p> Whoops you have to login!</p>
         <% } %>
       </tbody>
     </table>
