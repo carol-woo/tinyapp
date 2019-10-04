@@ -30,10 +30,7 @@ let generateRandomString = function () {
 };
 
 //THE SHORT URL AS THE KEY AND LONGURL AS THE VALUE
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
+const urlDatabase = {};
 //USERS
 const users = {
   "userRandomID": {
@@ -86,7 +83,6 @@ app.post("/registration", (req, res) => {
       password: bcrypt.hashSync(req.body.password, 10)
     };
     req.session.user_id = newKey;
-    // console.log(req.session.user_id = newKey)
     res.redirect(`/urls`);
   }
 });
@@ -106,7 +102,6 @@ app.post("/login", (req, res) => {
     res.status(403).send("Email does not exsist");
   } else if (emailCheck(req.body.email) && passCheck(req.body.password)) {
     for (let key of Object.keys(users)) {
-      console.log("key ", key);
       const userObject = users[key];
       if (userObject.email === req.body.email) {
         user = userObject;
@@ -122,7 +117,6 @@ app.post("/login", (req, res) => {
 //INDEX
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase, user: users[req.session.user_id] };
-  // console.log(templateVars);
   res.render("urls_index", templateVars);
 });
 
@@ -158,9 +152,8 @@ app.post("/urls", (req, res) => {
 //RENDERS SAID SHORT URL PAGE
 app.get("/urls/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL;
-  let longURL = urlDatabase[shortURL];
+  let longURL = urlDatabase[shortURL].longURL;
   let templateVars = { shortURL: shortURL, longURL: longURL, user: users[req.session.user_id] };
-  console.log(templateVars);
 
   res.render("urls_show", templateVars);
 });
@@ -177,10 +170,12 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   res.redirect("/urls");
 });
 
-//EDIT URL
+
 app.post("/urls/:shortURL", (req, res) => {
-  urlDatabase[req.params.shortURL] = req.body.longURL;
-  res.redirect("/urls/" + req.params.shortURL);
+  let shortURL = req.params.shortURL;
+  let longURL = req.body.longURL;
+  urlDatabase[shortURL].longURL = longURL;
+  res.redirect("/urls/");
 });
 
 
