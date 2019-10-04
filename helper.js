@@ -32,11 +32,11 @@ let passCheck = function (pass) {
   return false;
 };
 
-//THE SHORT URL AS THE KEY AND LONGURL AS THE VALUE
+//THE SHORTURL AS THE KEY AND LONGURL AS THE VALUE
 const urlDatabase = {};
+
 //USERS
 const users = {};
-// //CALL BACK FOR C
 
 module.exports = {
   generateRandomString,
