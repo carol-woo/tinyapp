@@ -1,67 +1,58 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser"); // REMOVE ME LATER PLS<3
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
+//~~~~~helper functions ~~~~~~~~~~~~~
+const { generateRandomString,
+  emailCheck,
+  passCheck,
+  urlDatabase,
+  users } = require('./helper');
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 const PORT = 8080;
 
 app.set("view engine", "ejs");
 app.use(cookieSession({
   name: 'session',
   keys: ["POTATO"],
-
-
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
-
-//GENERATES RANDOM NUMBER/LETTER COMBO FOR SHORT URL
-let generateRandomString = function () {
-  let letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-  let stringlength = 6;
-  let randomstring = '';
-  for (let i = 0; i < stringlength; i++) {
-    let randomNum = Math.floor(Math.random() * letters.length);
-    randomstring += letters.substring(randomNum, randomNum + 1);
-  }
-  return randomstring;
-};
+// //GENERATES RANDOM NUMBER/LETTER COMBO FOR SHORT URL
+// let generateRandomString = function () {
+//   let letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+//   let stringlength = 6;
+//   let randomstring = '';
+//   for (let i = 0; i < stringlength; i++) {
+//     let randomNum = Math.floor(Math.random() * letters.length);
+//     randomstring += letters.substring(randomNum, randomNum + 1);
+//   }
+//   return randomstring;
+// };
 
 //THE SHORT URL AS THE KEY AND LONGURL AS THE VALUE
-const urlDatabase = {};
+// const urlDatabase = {};
 //USERS
-const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur"
-  },
-  "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk"
-  }
-};
-//CALL BACK FOR CHECKING IF USERS ARE THE SAME OR HAVE EMPTY PASSWORDS
-let emailCheck = function (email) {
-  for (let user in users) {
-    if (email === users[user].email) {
-      return true;
-    }
-  }
-  return false;
-};
+// const users = {};
+// //CALL BACK FOR CHECKING IF USERS ARE THE SAME OR HAVE EMPTY PASSWORDS
+// let emailCheck = function (email) {
+//   for (let user in users) {
+//     if (email === users[user].email) {
+//       return true;
+//     }
+//   }
+//   return false;
+// };
 //CALLBACK THAT CHECKS IF PASSWORDS MATCH
-let passCheck = function (pass) {
-  for (let user in users) {
-    if (bcrypt.hashSync(users[user].password, 10)) {
-      return true;
-    }
-  }
-  return false;
-};
+// let passCheck = function (pass) {
+//   for (let user in users) {
+//     if (bcrypt.hashSync(users[user].password, 10)) {
+//       return true;
+//     }
+//   }
+//   return false;
+// };
 
 //REGISTRATION PAGE
 app.get("/registration", (req, res) => {
@@ -160,7 +151,7 @@ app.get("/urls/:shortURL", (req, res) => {
 
 //REDIRECTS YOU TO THE ORIGIN OF THE URL ON THE SHORT URL PAGE
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
 
