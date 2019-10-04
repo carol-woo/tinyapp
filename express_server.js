@@ -2,57 +2,24 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
-//~~~~~helper functions ~~~~~~~~~~~~~
+//~~~~~~~~helper functions ~~~~~~~~~~~~~
 const { generateRandomString,
   emailCheck,
   passCheck,
   urlDatabase,
   users } = require('./helper');
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 8080;
-
 app.set("view engine", "ejs");
 app.use(cookieSession({
   name: 'session',
   keys: ["POTATO"],
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
-// //GENERATES RANDOM NUMBER/LETTER COMBO FOR SHORT URL
-// let generateRandomString = function () {
-//   let letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-//   let stringlength = 6;
-//   let randomstring = '';
-//   for (let i = 0; i < stringlength; i++) {
-//     let randomNum = Math.floor(Math.random() * letters.length);
-//     randomstring += letters.substring(randomNum, randomNum + 1);
-//   }
-//   return randomstring;
-// };
 
-//THE SHORT URL AS THE KEY AND LONGURL AS THE VALUE
-// const urlDatabase = {};
-//USERS
-// const users = {};
-// //CALL BACK FOR CHECKING IF USERS ARE THE SAME OR HAVE EMPTY PASSWORDS
-// let emailCheck = function (email) {
-//   for (let user in users) {
-//     if (email === users[user].email) {
-//       return true;
-//     }
-//   }
-//   return false;
-// };
-//CALLBACK THAT CHECKS IF PASSWORDS MATCH
-// let passCheck = function (pass) {
-//   for (let user in users) {
-//     if (bcrypt.hashSync(users[user].password, 10)) {
-//       return true;
-//     }
-//   }
-//   return false;
-// };
+
 
 //REGISTRATION PAGE
 app.get("/registration", (req, res) => {
@@ -110,12 +77,6 @@ app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase, user: users[req.session.user_id] };
   res.render("urls_index", templateVars);
 });
-
-//HOME PAGE...?
-app.get("/", (req, res) => {
-  res.send("Hello!");
-});
-
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
@@ -161,7 +122,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   res.redirect("/urls");
 });
 
-
+//REDIRECT TO INDEX
 app.post("/urls/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL;
   let longURL = req.body.longURL;

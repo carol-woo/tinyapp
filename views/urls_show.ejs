@@ -8,20 +8,19 @@
   <title>URL - TinyApp Example</title>
 </head>
 
-<body <% include ./partials/_header %>>
-  <div class="card text-center">
-    <div class="card-header"></div>
-    <div class="card-body">
-      <h5 class="card-title">TinyURL for: <a href="/u/<%= longURL %>"><%= longURL %></a></h5>
-      <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
-    </div>
-    <div class="card-footer text-muted">
-      <h5>Edit</h5>
-      <form action="/urls/<%= shortURL %>" method="POST"> New URL:
-        <input type="text" placeholder="http://" name="longURL" />
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+<body <% include ./partials/_header %> <div class="card text-center">
+  <div class="card-header"></div>
+  <div class="card-body">
+    <h5 class="card-title">TinyURL for: <a href="/u/<%= longURL %>"><%= longURL %></a></h5>
+    <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
+  </div>
+  <div class="card-footer text-muted">
+    <h5>Edit</h5>
+    <form action="/urls/<%= shortURL %>" method="POST"> New URL:
+      <input type="text" placeholder="http://" name="longURL" />
+      <input type="submit" value="Submit" />
+    </form>
+  </div>
   </div>
   </div>
 

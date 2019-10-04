@@ -11,41 +11,40 @@
   <title>TinyApp</title>
 </head>
 
-<body <% include ./partials/_header %>>
-  <main style="margin: 1em;">
-    <h3>My URLs</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Short URL</th>
-          <th scope="col">Long URL</th>
-          <th scope="col">Edit</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-      <% if(user) {%>
-      <tbody>
-        <% for(let url in urls) { %>
-        <% if(user.id === urls[url].userID) { %>
-        <tr>
-          <td><%= url %></td>
-          <td><%= urls[url].longURL %></td>
-          <td>
-            <a href="/urls/<%=url%>" class="btn btn-primary">Edit</a>
-          </td>
-          <td>
-            <form method="POST" action="/urls/<%=url%>/delete">
-              <button type="submit" class="btn btn-primary">Delete</button>
-            </form>
-          </td>
-        </tr>
-        <% } %>
-        <% } %>
-        <% } else { %>
-        <p> Whoops you have to login!</p>
-        <% } %>
-      </tbody>
-    </table>
+<body <% include ./partials/_header %> <main style="margin: 1em;">
+  <h3>My URLs</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Short URL</th>
+        <th scope="col">Long URL</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <% if(user) {%>
+    <tbody>
+      <% for(let url in urls) { %>
+      <% if(user.id === urls[url].userID) { %>
+      <tr>
+        <td><%= url %></td>
+        <td><%= urls[url].longURL %></td>
+        <td>
+          <a href="/urls/<%=url%>" class="btn btn-primary">Edit</a>
+        </td>
+        <td>
+          <form method="POST" action="/urls/<%=url%>/delete">
+            <button type="submit" class="btn btn-primary">Delete</button>
+          </form>
+        </td>
+      </tr>
+      <% } %>
+      <% } %>
+      <% } else { %>
+      <h3> Whoops you have to login!</h3>
+      <% } %>
+    </tbody>
+  </table>
   </main>
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
