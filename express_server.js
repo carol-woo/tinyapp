@@ -103,11 +103,15 @@ app.post("/urls", (req, res) => {
 
 //RENDERS SAID SHORT URL PAGE
 app.get("/urls/:shortURL", (req, res) => {
-  let shortURL = req.params.shortURL;
-  let longURL = urlDatabase[shortURL].longURL;
-  let templateVars = { shortURL: shortURL, longURL: longURL, user: users[req.session.user_id] };
+  if (req.session.user_id === urlDatabase[req.params.shortURL].userID) {
+    let shortURL = req.params.shortURL;
+    let longURL = urlDatabase[shortURL].longURL;
+    let templateVars = { shortURL: shortURL, longURL: longURL, user: users[req.session.user_id] };
+    res.render("urls_show", templateVars);
+  } else {
+    res.status(400).send("Whoopes! You must be logged in to do that!");
 
-  res.render("urls_show", templateVars);
+  }
 });
 
 //REDIRECTS YOU TO THE ORIGIN OF THE URL ON THE SHORT URL PAGE
