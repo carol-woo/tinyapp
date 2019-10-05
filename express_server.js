@@ -118,8 +118,16 @@ app.get("/u/:shortURL", (req, res) => {
 
 //DELETING URLS
 app.post("/urls/:shortURL/delete", (req, res) => {
-  delete urlDatabase[req.params.shortURL];
-  res.redirect("/urls");
+  console.log("user id ", req.session.user_id)
+  console.log("users ", users)
+  console.log("shorturl ", req.params.shortURL)
+  console.log("urldatabase ", urlDatabase);
+  if (req.session.user_id === urlDatabase[req.params.shortURL].userID) {
+    delete urlDatabase[req.params.shortURL];
+    res.redirect("/urls");
+  } else {
+    res.status(400).send("Whoopes! You must be logged in to do that!");
+  }
 });
 
 //REDIRECT TO INDEX
