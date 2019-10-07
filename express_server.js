@@ -29,7 +29,7 @@ app.get("/registration", (req, res) => {
 
 //MAKING NEW USER AND CHECKING IF USERS ARE THE SAME
 app.post("/registration", (req, res) => {
-  if (req.body.email === "" || req.body.email === "") {
+  if (req.body.email === "" || req.body.password === "") {
     res.status(400).send("Email or Password is empty!");
   } else if (emailCheck(req.body.email)) {
     res.status(400).send("Email already in use!");
@@ -68,6 +68,7 @@ app.post("/login", (req, res) => {
   } else {
     res.status(403).send("Uh oh! Your email or password might be wrong!");
   }
+
   req.session.user_id = user.id;
   res.redirect(`/urls`);
 });

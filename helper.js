@@ -25,7 +25,7 @@ let emailCheck = function (email) {
 //checks the password and sees if it matches what is being put in.
 let passCheck = function (pass) {
   for (let user in users) {
-    if (bcrypt.hashSync(users[user].password, 10)) {
+    if (bcrypt.compareSync(pass, users[user].password)) {
       return true;
     }
   }
